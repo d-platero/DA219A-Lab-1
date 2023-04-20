@@ -15,6 +15,8 @@ async function main() {
   await mongoose.connect(mongoDB);
 }
 
+db.dbSeeder()
+
 app.get('/', (req, res) =>{
     res.json({this: 'is a test, this should be a homepage'})
     })
