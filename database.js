@@ -1,7 +1,5 @@
 const sqlite3 = require('sqlite3').verbose()
 const db = new sqlite3.Database(':memory:')
-const bcrypt = require('bcrypt')
-
 
 db.serialize(async () => {
   db.run(`CREATE TABLE IF NOT EXISTS albums (id TEXT PRIMARY KEY, title TEXT, artist TEXT)`)
