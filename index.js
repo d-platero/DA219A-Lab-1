@@ -16,10 +16,9 @@ async function main() {
 }
 
 app.get('/', (req, res) =>{
-    //    var token = jwt.sign("username", process.env.TOKEN)
-        res.json({this: 'is a test, this should be a homepage'})
+    res.json({this: 'is a test, this should be a homepage'})
     })
 
 app.get('/api/albums', async (req,res) => {   // GET ALL
-    res.json(await Album.find())
+    res.json(await db.find())
 })
