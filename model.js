@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const albumSchema = new Schema({ id: Number, title: String, artist: String })
+const albumSchema = mongoose.Schema({ id: {type: Number, unique: true, indexed: true}, title: String, artist: String })
 
 const Album = mongoose.model('Album', albumSchema)
 
