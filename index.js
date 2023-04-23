@@ -27,7 +27,7 @@ app.get('/api/albums', async (req,res) => {   // GET all album data
       res.status(200).json(await db.Album.find())
     }
     catch(error){
-      res.status(404).json(error)
+      res.status(404).json(error.message)
     }
 })
 
@@ -45,7 +45,7 @@ app.get('/api/albums/:title', async (req,res) => {   // POST route to get specif
   }  
 }
   catch(error){
-    res.json(error)
+    res.json(error.message)
   }
 })
 
@@ -61,7 +61,7 @@ app.post('/api/albums/', async (req, res) => { // Create new album
     }  
 }
   catch(error){
-    res.status(400).json(error)
+    res.status(400).json(error.message)
   }
 })
 
@@ -75,13 +75,28 @@ app.put('/api/albums/:id', async (req, res) => {  // Update album
     }
     else // If album exists
     { 
-      var data = new Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+      var data = new Album({id: req.params.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
       await data.save()
       res.status(200).json(data)
     }
   }
   catch(error){
-    res.status(400).json(error)
+    res.status(400).json(error.message)
+  }
+})
+
+app.delete('/api/albums/:id', async (req, res) => { // Delete
+  try{
+    var data = await db.findOneAndDelete({id:req.params.id})
+    if(data.length == 0){
+      res.status(404).json({message: 'No album matching that ID'})
+    }
+    else{
+      res.status(200).json(data)
+    }
+  }
+  catch(error){
+    res.json(error.message)
   }
 })
 
