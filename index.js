@@ -52,7 +52,7 @@ app.get('/api/albums/:title', async (req,res) => {   // POST route to get specif
 app.post('/api/albums/', async (req, res) => { // Create new album
   try {
     console.log('test')
-    var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+    var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, year: req.body.year})
     console.log('here')
     console.log(data)
     if (await db.Album.find({id: req.body.id}) != 0){
@@ -69,18 +69,20 @@ app.post('/api/albums/', async (req, res) => { // Create new album
   }
 })
 
-app.put('/api/albums/:id', async (req, res) => {  // Update album
+// TODO: Maybe implement this as a redirect? 
+app.put('/api/albums/:id&:title&:artist&:year', async (req, res) => {  // Update album, create if not exists
+  console.log('test')
   try{
     if (await db.Album.findOne({id: req.params.id}).exec() == 0){
       // render new form?
-      var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+      var data = new db.Album({id: req.params.id, title: req.params.title, artist: req.params.artist, year: req.params.year})
       await data.save()
       res.status(201).json({message: 'Album not found, creating new one'})
       res.json(data)
     }
     else // If album exists
     { 
-      var data = new db.Album({id: req.params.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+      var data = new db.Album({id: req.params.id, title: req.params.title, artist: req.params.artist, year: req.params.year})
       await data.save()
       res.status(200).json(data)
     }
