@@ -1,11 +1,11 @@
 require('dotenv').config()
 const express = require("express")
 const app = express()
-const db = require('./model')
+const db = require('./model.js')
 const mongoose = require("mongoose");
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded())
 
 mongoose.set("strictQuery", false);
 
@@ -51,13 +51,17 @@ app.get('/api/albums/:title', async (req,res) => {   // POST route to get specif
 
 app.post('/api/albums/', async (req, res) => { // Create new album
   try {
+    console.log('test')
     var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
-    if (await db.Album.find({title: data.title, artist: data.artist, date: data.date}) == 0){
+    console.log('here')
+    console.log(data)
+    if (await db.Album.find({id: req.body.id}) != 0){
       res.status(409).json({error: 'Album already in database'})
     }
     else {
-    await data.save()
-    res.status(201).json(data)
+      await data.save()
+      console.log(data)
+      res.status(201).json(data)
     }  
 }
   catch(error){
@@ -68,6 +72,7 @@ app.post('/api/albums/', async (req, res) => { // Create new album
 app.put('/api/albums/:id', async (req, res) => {  // Update album
   try{
     if (await db.Album.findOne({id: req.params.id}).exec() == 0){
+      // render new form?
       var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
       await data.save()
       res.status(201).json({message: 'Album not found, creating new one'})
