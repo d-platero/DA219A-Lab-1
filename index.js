@@ -49,5 +49,21 @@ app.get('/api/albums/:title', async (req,res) => {   // POST route to get specif
   }
 })
 
+app.post('/api/albums/', async (req, res) => { 
+  try {
+    var data = new Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+    if (await db.find({title: data.title, artist: data.artist, date: data.date}) == 0){
+      res.status(409).json({error: 'Album already in database'})
+    }
+    else {
+    await data.save()
+    res.status(201).json(data)
+    }  
+}
+  catch(error){
+    res.status(400).json(error)
+  }
+})
+
 app.listen(3000)
 // TODO: Prepared statements for input
