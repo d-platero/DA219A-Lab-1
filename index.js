@@ -49,7 +49,7 @@ app.get('/api/albums/:title', async (req,res) => {   // POST route to get specif
   }
 })
 
-app.post('/api/albums/', async (req, res) => { 
+app.post('/api/albums/', async (req, res) => { // Create new album
   try {
     var data = new Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
     if (await db.find({title: data.title, artist: data.artist, date: data.date}) == 0){
@@ -60,6 +60,26 @@ app.post('/api/albums/', async (req, res) => {
     res.status(201).json(data)
     }  
 }
+  catch(error){
+    res.status(400).json(error)
+  }
+})
+
+app.put('/api/albums/:id', async (req, res) => {  // Update album
+  try{
+    if (await db.findOne({id: req.params.id}).exec() == 0){
+      var data = new Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+      await data.save()
+      res.status(201).json({message: 'Album not found, creating new one'})
+      res.json(data)
+    }
+    else // If album exists
+    { 
+      var data = new Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+      await data.save()
+      res.status(200).json(data)
+    }
+  }
   catch(error){
     res.status(400).json(error)
   }
