@@ -51,8 +51,8 @@ app.get('/api/albums/:title', async (req,res) => {   // POST route to get specif
 
 app.post('/api/albums/', async (req, res) => { // Create new album
   try {
-    var data = new Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
-    if (await db.find({title: data.title, artist: data.artist, date: data.date}) == 0){
+    var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+    if (await db.Album.find({title: data.title, artist: data.artist, date: data.date}) == 0){
       res.status(409).json({error: 'Album already in database'})
     }
     else {
@@ -67,15 +67,15 @@ app.post('/api/albums/', async (req, res) => { // Create new album
 
 app.put('/api/albums/:id', async (req, res) => {  // Update album
   try{
-    if (await db.findOne({id: req.params.id}).exec() == 0){
-      var data = new Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+    if (await db.Album.findOne({id: req.params.id}).exec() == 0){
+      var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
       await data.save()
       res.status(201).json({message: 'Album not found, creating new one'})
       res.json(data)
     }
     else // If album exists
     { 
-      var data = new Album({id: req.params.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
+      var data = new db.Album({id: req.params.id, title: req.body.title, artist: req.body.artist, date: req.body.date})
       await data.save()
       res.status(200).json(data)
     }
@@ -87,7 +87,7 @@ app.put('/api/albums/:id', async (req, res) => {  // Update album
 
 app.delete('/api/albums/:id', async (req, res) => { // Delete
   try{
-    var data = await db.findOneAndDelete({id:req.params.id})
+    var data = await db.Album.findOneAndDelete({id:req.params.id})
     if(data.length == 0){
       res.status(404).json({message: 'No album matching that ID'})
     }
