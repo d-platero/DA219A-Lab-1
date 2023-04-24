@@ -2,7 +2,7 @@ let createData = document.getElementById("addButton");
 let deleteData = document.getElementById("deleteButton");
 let updateData = document.getElementById("updateButton");
 let showAlbums = document.getElementById("showAlbumsButton")
-
+let test = document.getElementBy
 
 async function getData() { 
     try { 
