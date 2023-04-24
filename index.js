@@ -89,9 +89,11 @@ app.put('/api/albums/', async (req, res) => {  // Update album, create if not ex
       res.json(data)
     }
     else // If album exists
-    { 
-      var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, year: req.body.year})
-      await data.save()
+    {
+      var updatedData = {id: req.body.id, title: req.body.title, artist: req.body.artist, year: req.body.year}
+//      var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, year: req.body.year})
+      var filterData = {id: req.body.id}
+      var data = await db.Album.findOneAndUpdate(filterData, updatedData)
       res.status(200).json(data)
     }
   }
