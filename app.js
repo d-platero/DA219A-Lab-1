@@ -55,12 +55,12 @@ showAlbums.addEventListener("click", event => {
 
 
 
-async function deletedata(name, category, date, author) { 
+async function deletedata(id, title, artist, year) { 
     try { 
-        const result = await fetch('http://localhost:3000/deleteData', { 
-            method: 'POST', 
+        const result = await fetch('http://localhost:3000/api/albums', { 
+            method: 'DELETE', 
             headers: { 'content-type': 'application/x-www-form-urlencoded' } ,
-            body: new URLSearchParams({ "name": name, "category": category, "date": date, "author": author})
+            body: new URLSearchParams({ "id": id, "title": title, "artist": artist, "year": year})
         });
     } catch (error) { 
         console.log(error) 
@@ -68,12 +68,11 @@ async function deletedata(name, category, date, author) {
 }
 
 deleteData.addEventListener('click', event => {
-    const name = nameText.value
-    var category = categoryText.value
-    var date = dateText.value
-    var author = authorText.value
-
-    Promise.resolve(deletedata(name, category, date, author));
+    const id = idText.value
+    var title = titleText.value
+    var artist = artistText.value
+    var year = yearText.value
+    Promise.resolve(deletedata(id, title, artist, year));
 
 });
 

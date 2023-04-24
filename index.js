@@ -102,7 +102,7 @@ app.put('/api/albums/', async (req, res) => {  // Update album, create if not ex
   }
 })
 
-app.delete('/api/albums/:id', async (req, res) => { // Delete
+app.delete('/api/albums/', async (req, res) => { // Delete
   try{
     var data = await db.Album.findOneAndDelete({id:req.body.id})
     if(data.length == 0){
@@ -110,6 +110,7 @@ app.delete('/api/albums/:id', async (req, res) => { // Delete
     }
     else{
       res.status(200).json(data)
+      console.log('here')
     }
   }
   catch(error){
