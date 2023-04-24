@@ -4,6 +4,7 @@ const app = express()
 const db = require('./model.js')
 const mongoose = require("mongoose");
 const cors = require('cors')
+app.set('view-engine', 'ejs')
 
 
 app.use(express.json())
@@ -77,19 +78,19 @@ app.post('/api/albums/', async (req, res) => { // Create new album
 })
 
 // TODO: Maybe implement this as a redirect? 
-app.put('/api/albums/:id&:title&:artist&:year', async (req, res) => {  // Update album, create if not exists
+app.put('/api/albums/', async (req, res) => {  // Update album, create if not exists
   console.log('test')
   try{
-    if (await db.Album.findOne({id: req.params.id}).exec() == 0){
+    if (await db.Album.findOne({id: req.body.id}).exec() == 0){
       // render new form?
-      var data = new db.Album({id: req.params.id, title: req.params.title, artist: req.params.artist, year: req.params.year})
+      var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, year: req.body.year})
       await data.save()
       res.status(201).json({message: 'Album not found, creating new one'})
       res.json(data)
     }
     else // If album exists
     { 
-      var data = new db.Album({id: req.params.id, title: req.params.title, artist: req.params.artist, year: req.params.year})
+      var data = new db.Album({id: req.body.id, title: req.body.title, artist: req.body.artist, year: req.body.year})
       await data.save()
       res.status(200).json(data)
     }
@@ -101,7 +102,7 @@ app.put('/api/albums/:id&:title&:artist&:year', async (req, res) => {  // Update
 
 app.delete('/api/albums/:id', async (req, res) => { // Delete
   try{
-    var data = await db.Album.findOneAndDelete({id:req.params.id})
+    var data = await db.Album.findOneAndDelete({id:req.body.id})
     if(data.length == 0){
       res.status(404).json({message: 'No album matching that ID'})
     }

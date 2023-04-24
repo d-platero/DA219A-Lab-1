@@ -1,8 +1,8 @@
-let createData = document.getElementById("addButton");
+let addData = document.getElementById("addButton");
 let deleteData = document.getElementById("deleteButton");
 let updateData = document.getElementById("updateButton");
 let showAlbums = document.getElementById("showAlbumsButton")
-let test = document.getElementBy
+let editData = document.getElementById("editButton");
 
 async function getData() { 
     try { 
@@ -29,17 +29,13 @@ showAlbums.addEventListener("click", event => {
     </tr>`
 
     for (let elem in albums) {
-        console.log(albums[elem])
-        html += "<tr><td><input type=\"text\" id=\"idText\" value=\"" + albums[elem].id + 
-        "\"</input></td><td><input type=\"text\" id=\"titleText\" value=\"" + albums[elem].title
-         + "\"</input></td><td><input type=\"text\" id=\"artistText\" value=\"" + albums[elem].artist 
-         + "\"</input></td><td><input type=\"text\" id=\"yearText\" value=\"" + albums[elem].year 
-         + "\"s</input></td>"
+        html += "<tr><td>" + albums[elem].id + 
+        "</td><td>" + albums[elem].title
+         + "</td><td>" + albums[elem].artist 
+         + "</td><td>" + albums[elem].year 
+         + "</td>"
          
-        html += `<button type="button" id="addButton">Add album</button>
-        <button type="button" id="deleteButton">Delete album</button>
-        <button type="button" id="updateButton">Update album</button></tr>`
-        console.log(elem)
+        html += "</tr>"
     }
 
     html += "</table>"
@@ -51,7 +47,6 @@ showAlbums.addEventListener("click", event => {
     document.getElementById("showAlbums").innerHTML = html
 
 //    document.getElementById("showAlbums").innerHTML = books.map(b => JSON.stringify(b)).join('<br/>')
-    console.log(document.getElementById("showAlbums").innerHTML)
     }).catch(err => { 
         console.log(err); 
     }) 
@@ -82,12 +77,12 @@ deleteData.addEventListener('click', event => {
 
 });
 
-async function adddata(name, category, date, author) { 
+async function adddata(id, title, artist, year) { 
     try { 
-        const result = await fetch('http://localhost:3000/addData', { 
+        const result = await fetch('http://localhost:3000/api/albums', { 
             method: 'POST', 
             headers: { 'content-type': 'application/x-www-form-urlencoded' } ,
-            body: new URLSearchParams({ "name": name, "category": category, "date": date, "author": author})
+            body: new URLSearchParams({ "id": id, "title": title, "artist": artist, "year": year})
         });
         return
     } catch (error) { 
@@ -95,12 +90,34 @@ async function adddata(name, category, date, author) {
     }
 }
 
-createData.addEventListener('click', event => {
-    // add data here
-    const name = nameText.value
-    var category = categoryText.value
-    var date = dateText.value
-    var author = authorText.value
-    Promise.resolve(adddata(name, category, date, author));
+addData.addEventListener('click', event => {
+    console.log('test')
+    const id = idText.value
+    var title = titleText.value
+    var artist = artistText.value
+    var year = yearText.value
+    Promise.resolve(adddata(id, title, artist, year));
      
+});
+
+async function editdata(id, title, artist, year) { 
+    try { 
+        const result = await fetch('http://localhost:3000/api/albums', { 
+            method: 'PUT', 
+            headers: { 'content-type': 'application/x-www-form-urlencoded' } ,
+            body: new URLSearchParams({ "id": id, "title": title, "artist": artist, "year": year})
+        });
+        return
+    } catch (error) { 
+        console.log(error) 
+    }
+}
+
+editData.addEventListener('click', event => {
+    console.log('test')
+    const id = idText.value
+    var title = titleText.value
+    var artist = artistText.value
+    var year = yearText.value
+    Promise.resolve(editdata(id, title, artist, year));
 });
