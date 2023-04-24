@@ -1,4 +1,3 @@
-let showDetails = document.getElementById("detailsButton");
 let createData = document.getElementById("addButton");
 let deleteData = document.getElementById("deleteButton");
 let updateData = document.getElementById("updateButton");
@@ -31,11 +30,23 @@ showAlbums.addEventListener("click", event => {
 
     for (let elem in albums) {
         console.log(albums[elem])
-        html += "<tr><td>" + albums[elem].id + "</td><td>" + albums[elem].title + "</td><td>" + albums[elem].artist + "</td><td>" + albums[elem].year + "</td></tr>"
+        html += "<tr><td><input type=\"text\" id=\"idText\" value=\"" + albums[elem].id + 
+        "\"</input></td><td><input type=\"text\" id=\"titleText\" value=\"" + albums[elem].title
+         + "\"</input></td><td><input type=\"text\" id=\"artistText\" value=\"" + albums[elem].artist 
+         + "\"</input></td><td><input type=\"text\" id=\"yearText\" value=\"" + albums[elem].year 
+         + "\"s</input></td>"
+         
+        html += `<button type="button" id="addButton">Add album</button>
+        <button type="button" id="deleteButton">Delete album</button>
+        <button type="button" id="updateButton">Update album</button></tr>`
         console.log(elem)
     }
 
     html += "</table>"
+    /*          <input type="text" id="idText"></input>
+          <input type="text" id = "titleText" ></input>
+          <input type="text" id = "artistText" ></input>
+          <input type="text" id = "yearText" ></input> */
 
     document.getElementById("showAlbums").innerHTML = html
 
