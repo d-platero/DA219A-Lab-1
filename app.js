@@ -1,10 +1,11 @@
-let showData = document.getElementById("dataButton");
+let showDetails = document.getElementById("detailsButton");
 let createData = document.getElementById("addButton");
 let deleteData = document.getElementById("deleteButton");
 let updateData = document.getElementById("updateButton");
+let showAlbums = document.getElementById("showAlbumsButton")
 
 
-async function getdata() { 
+async function getData() { 
     try { 
         const result = await fetch('http://localhost:3000/api/albums', { 
             method: 'GET', 
@@ -16,11 +17,30 @@ async function getdata() {
     }
 }
 
-getData.addEventListener("click", event => {     
-    const value = Promise.resolve(getdata()); 
-    value.then(books =>{ 
-    console.log(books)
-    document.getElementById("showBooks").innerHTML = books.map(b => JSON.stringify(b)).join('<br/>')
+showAlbums.addEventListener("click", event => {     
+    const value = Promise.resolve(getData()); 
+    value.then(albums =>{ 
+    console.log(albums)
+    let html = ` <table cellspacing="20">
+    <tr>
+      <th align="left">ID</th>
+      <th align="left">Title</th>
+      <th align="left">Artist</th>
+      <th align="left">Year</th>
+    </tr>`
+
+    for (let elem in albums) {
+        console.log(albums[elem])
+        html += "<tr><td>" + albums[elem].id + "</td><td>" + albums[elem].title + "</td><td>" + albums[elem].artist + "</td><td>" + albums[elem].year + "</td></tr>"
+        console.log(elem)
+    }
+
+    html += "</table>"
+
+    document.getElementById("showAlbums").innerHTML = html
+
+//    document.getElementById("showAlbums").innerHTML = books.map(b => JSON.stringify(b)).join('<br/>')
+    console.log(document.getElementById("showAlbums").innerHTML)
     }).catch(err => { 
         console.log(err); 
     }) 
@@ -31,7 +51,7 @@ getData.addEventListener("click", event => {
 
 async function deletedata(name, category, date, author) { 
     try { 
-        const result = await fetch('http://localhost:5000/deleteData', { 
+        const result = await fetch('http://localhost:3000/deleteData', { 
             method: 'POST', 
             headers: { 'content-type': 'application/x-www-form-urlencoded' } ,
             body: new URLSearchParams({ "name": name, "category": category, "date": date, "author": author})
@@ -53,7 +73,7 @@ deleteData.addEventListener('click', event => {
 
 async function adddata(name, category, date, author) { 
     try { 
-        const result = await fetch('http://localhost:5000/addData', { 
+        const result = await fetch('http://localhost:3000/addData', { 
             method: 'POST', 
             headers: { 'content-type': 'application/x-www-form-urlencoded' } ,
             body: new URLSearchParams({ "name": name, "category": category, "date": date, "author": author})
@@ -64,7 +84,7 @@ async function adddata(name, category, date, author) {
     }
 }
 
-addData.addEventListener('click', event => {
+createData.addEventListener('click', event => {
     // add data here
     const name = nameText.value
     var category = categoryText.value
