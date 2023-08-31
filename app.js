@@ -1,8 +1,11 @@
-let addData = document.getElementById("addButton");
-let deleteData = document.getElementById("deleteButton");
-let updateData = document.getElementById("updateButton");
-let showAlbums = document.getElementById("showAlbumsButton")
-let editData = document.getElementById("editButton");
+if (typeof window !== "undefined")
+{
+    let addData = document.getElementById("addButton");
+    let deleteData = document.getElementById("deleteButton");
+    let updateData = document.getElementById("updateButton");
+    let showAlbums = document.getElementById("showAlbumsButton")
+    let editData = document.getElementById("editButton");
+}
 
 async function getData() { 
     try { 
